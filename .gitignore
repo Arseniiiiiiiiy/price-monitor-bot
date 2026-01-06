@@ -1,1 +1,7 @@
-@".envdata.sqlite3__pycache__/*.pyc.venv/.idea/.vscode/"@ | Out-File -Encoding utf8 .gitignore
+.env
+data.sqlite3
+pycache/
+*.pyc
+.venv/
+.idea/
+.vscode/
