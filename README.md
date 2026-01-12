@@ -22,7 +22,6 @@
 
 - Python
 - SQLite
-- SQL
 - Работа с внешними API (HTTP)
 - Telegram Bot API
 - Хранение конфигурации через ".env"
