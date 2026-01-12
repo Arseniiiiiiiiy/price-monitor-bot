@@ -82,7 +82,7 @@ pip install -r requirements.txt
 В корне проекта необходимо создать файл .env и указать в нём настройки приложения.
 Пример содержимого файла:
 
-```bash
+```env
 BOT_TOKEN=токен_telegram_бота
 DB_PATH=data.sqlite3
 ```
