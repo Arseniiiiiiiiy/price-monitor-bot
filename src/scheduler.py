@@ -1,19 +1,20 @@
-from apscheduler.schedulers.background import BackgroundScheduler
-from telegram.ext import Application
+from telegram.ext import Application, ContextTypes
 
 from src.services.ingest import ingest_product, get_last_price_delta
 from src.services.subscriptions import list_all_active_subscriptions
 
+
 def start_scheduler(app: Application, interval_seconds: int) -> None:
-    scheduler = BackgroundScheduler()
+    app.job_queue.run_repeating(
+        callback=poll_and_notify,
+        interval=interval_seconds,
+        first=10,
+        name="poll_and_notify",
+    )
 
-    def job_wrapper():
-        app.create_task(poll_and_notify(app))
 
-    scheduler.add_job(job_wrapper, "interval", seconds=interval_seconds, max_instances=1)
-    scheduler.start()
-
-async def poll_and_notify(app: Application) -> None:
+async def poll_and_notify(context: ContextTypes.DEFAULT_TYPE) -> None:
+    app = context.application
     subs = list_all_active_subscriptions()
 
     for chat_id, product_id, threshold in subs:

@@ -9,6 +9,10 @@ from src.services.subscriptions import (
     upsert_subscription, disable_subscription, list_active_subscriptions
 )
 
+import logging
+logger = logging.getLogger("price_monitor")
+
+
 def _fmt_money(x: float) -> str:
     return f"{x:.2f}"
 
@@ -29,6 +33,8 @@ async def set_threshold_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) 
     await update.message.reply_text(f"Ок. Новый дефолтный порог: {th}%.")
 
 async def track(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    logger.info("Команда /track. user_id=%s args=%s", update.effective_user.id, context.args)
+
     chat_id = update.effective_chat.id
     if not context.args:
         await update.message.reply_text("Пример: /track 1 2 3")
@@ -75,6 +81,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     )
 
 async def price(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+
+    logger.info("Команда /update. user_id=%s", update.effective_user.id)
+
     if not context.args:
         await update.message.reply_text("Пример: /price 1.")
         return
